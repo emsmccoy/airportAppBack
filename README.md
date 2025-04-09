@@ -59,14 +59,13 @@ This document serves as a guide and log for the full-stack development of the *
 
 ### Optional tasks
 
-| Task                                                                           | Estimated Time | Actual Time        | Impediments | New Concepts                        |
-| ------------------------------------------------------------------------------ | -------------- | ------------------ | ----------- | ----------------------------------- |
-| Add pagination to Flight class and FlightList component (backend and frontend) | 2 hours        | 3 hours            |             | Page, Pageable, DTO, PageRequest.of |
-| Add sorting to pagination                                                      | 2 hours        | 2 hours            |             | String[] vs ArrayList<String>       |
-| Add specifications                                                             | 2 hours        |                    |             |                                     |
-|                                                                                |                |                    |             |                                     |
-|                                                                                |                |                    |             |                                     |
-| **Total**                                                                      | **8 hours**    | **4 hours 25 min** |             |                                     |
+| Task                                                                           | Estimated Time | Actual Time | Impediments | New Concepts                        |
+| ------------------------------------------------------------------------------ | -------------- | ----------- | ----------- | ----------------------------------- |
+| Add pagination to Flight class and FlightList component (backend and frontend) | 2 hours        | 3 hours     |             | Page, Pageable, DTO, PageRequest.of |
+| Add flight filter                                                              | 2 hours        | 3 hours     |             | Specification, date-time parsing    |
+|                                                                                |                |             |             |                                     |
+|                                                                                |                |             |             |                                     |
+| **Total**                                                                      | **4 hours**    | **6 hours** |             |                                     |
 
 ## Frontend Part
 
