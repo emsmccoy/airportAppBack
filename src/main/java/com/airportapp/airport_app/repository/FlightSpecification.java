@@ -11,23 +11,59 @@ import java.time.LocalDateTime;
 
 public class FlightSpecification {
     public static Specification<Flight> findByParameters(
-        String flightNumber,
-        LocalDateTime departureTime,
-        LocalDateTime arrivalTime,
-        FlightStatus status,
-        Airport departureAirport,
-        Airport arrivalAirport,
-        Plane plane
-    ){
-       return (Root<Flight> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-          Predicate predicate = criteriaBuilder.conjunction();
+            String flightNumber,
+            LocalDateTime departureTime,
+            LocalDateTime arrivalTime,
+            FlightStatus status,
+            String departureAirport,
+            String arrivalAirport,
+            String plane
+    ) {
+        return (Root<Flight> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+
             Join<Airport, Flight> departureAirportJoin = root.join("departureAirport", JoinType.INNER);
             Join<Flight, Airport> arrivalAirportJoin = root.join("arrivalAirport", JoinType.INNER);
             Join<Flight, Plane> planeJoin = root.join("plane", JoinType.INNER);
-            if (flightNumber != null && !flightNumber.isEmpty()){
+
+            if (departureAirport != null) {
+                root.join("departureAirport", JoinType.INNER);
+            }
+            if (arrivalAirport != null) {
+                root.join("arrivalAirport", JoinType.INNER);
+            }
+            if (plane != null) {
+                root.join("plane", JoinType.INNER);
+            }
+
+            if (flightNumber != null && !flightNumber.isEmpty()) {
                 predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("flightNumber"), flightNumber));
             }
-            // the rest of conditions for predicate
+
+            if (departureTime != null) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.greaterThanOrEqualTo(root.get("departureTime"), departureTime));
+            }
+
+            if (arrivalTime != null) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.lessThanOrEqualTo(root.get("arrivalTime"), arrivalTime));
+            }
+
+            if (status != null) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("flightStatus"), status));
+            }
+
+            if (departureAirport != null) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(departureAirportJoin.get("name"), departureAirport));
+            }
+
+            if (arrivalAirport != null) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(arrivalAirportJoin.get("name"), arrivalAirport));
+            }
+
+            if (plane != null) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(planeJoin.get("model"), plane));
+            }
+
             return predicate;
         };
     }

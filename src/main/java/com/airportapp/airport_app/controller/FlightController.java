@@ -1,7 +1,10 @@
 package com.airportapp.airport_app.controller;
 
 
+import com.airportapp.airport_app.model.Airport;
 import com.airportapp.airport_app.model.Flight;
+import com.airportapp.airport_app.model.FlightStatus;
+import com.airportapp.airport_app.model.Plane;
 import com.airportapp.airport_app.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,8 +12,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/flights")
@@ -67,6 +74,27 @@ public class FlightController {
                     return ResponseEntity.ok().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/filter")
+    public List<Flight> getFilteredFlights(
+            @RequestParam(required = false) String flightNumber,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime arrivalTime,
+            @RequestParam(required = false) FlightStatus status,
+            @RequestParam(required = false) String departureAirport,
+            @RequestParam(required = false) String arrivalAirport,
+            @RequestParam(required = false) String plane
+    ){
+        return flightService.getFilteredFlights(
+                flightNumber,
+                departureTime,
+                arrivalTime,
+                status,
+                departureAirport,
+                arrivalAirport,
+                plane
+        );
     }
 
 }
